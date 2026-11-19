@@ -1,0 +1,31 @@
+name: ⚡ Controlador Roboldo CI (Python & Firmware)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-and-validate:
+    name: 🔎 Validação de Sintaxe & Qualidade de Código
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar Ruff (Linter rápido para Python)
+        run: pip install ruff
+
+      - name: 🧪 Verificar compilação de arquivos Python
+        run: python -m py_compile *.py
+
+      - name: 🔎 Análise estática com Ruff (erros críticos de sintaxe/imports)
+        run: ruff check . --select E9,F63,F7,F82
